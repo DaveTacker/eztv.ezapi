@@ -1,0 +1,13 @@
+<div class="torrent">
+  <span class="date">
+    {{ torrent.date | date:'short' }}
+  </span>
+  <span class="title">
+      {{ torrent.title }}
+  </span>
+ <div class="links">
+   <span class="link">{{ formatBytes(torrent.size_bytes) }}</span>
+     <a class="link" href="{{torrent.torrent_url}}">tor</a>
+     <a class="link" [href]="sanitize(torrent.magnet_url)">mag</a>
+ </div>
+</div>

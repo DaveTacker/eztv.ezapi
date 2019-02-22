@@ -1,3 +1,15 @@
-<h1>
-  {{title}}
-</h1>
+<div class="container">
+
+<div class="col-8">
+
+<ul class="torrents">
+  <li *ngFor="let torrent of torrents">
+      <app-torrent [torrent]="torrent" *ngIf="torrent.title.includes('WEB')"></app-torrent>
+  </li>
+</ul>
+</div>
+<div class="col-4">
+  <input class="form-control" [(ngModel)]="addInput">
+  <ul></ul>
+</div>
+</div>

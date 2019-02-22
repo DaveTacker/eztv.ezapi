@@ -1,0 +1,50 @@
+.torrent {
+  background-color: #f3f3f3;
+  height: 40px;
+  width: 100%;
+  line-height: 40px;
+  border-radius: 3px;
+  border: 1px solid #f8f8f8;
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.links {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #f8f8f8;
+}
+
+.link:not(:last-of-type) {
+  margin-right: 6px;
+}
+
+.link {
+  text-align: center;
+  width: 60px;
+  padding: 0 6px;
+  display: inline-block;
+}
+
+.link:last-of-type {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.date {
+  display: inline-block;
+  width: 150px;
+  padding: 0 6px;
+  background-color: #f8f8f8;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  height: 40px;
+}
+
+.title {
+  max-width: 450px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline;
+}
