@@ -4,8 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { TorrentComponent } from './Components/torrent/torrent.component';
-import { Http, HttpModule } from '@angular/http';
-//import { ComponentsModule } from './Components/components.module';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [

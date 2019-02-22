@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Torrent } from 'src/app/Models/torrent';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Torrent } from 'src/app/Models/torrent';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-torrent',
@@ -10,15 +11,27 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class TorrentComponent implements OnInit {
   @Input() torrent: Torrent = new Torrent();
 
-  constructor( public sanitizer: DomSanitizer) {
-   }
+  constructor(public sanitizer: DomSanitizer) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public sanitize(url: string) {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
-  public formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]}
 
+  public formatBytes(a, b) {
+    if (0 === a) {
+      return '0 Bytes';
+    }
+
+    const c = 1024;
+    const d = b || 2;
+    const e = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const f = Math.floor(Math.log(a) / Math.log(c));
+    return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f];
+  }
+
+  public cleanTitle(title: string): string {
+    return title.match(/(.*)(S\d+E\d+)/g).toString();
+  }
 }

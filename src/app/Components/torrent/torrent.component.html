@@ -1,13 +1,17 @@
-<div class="torrent">
-  <span class="date">
+<tr class="row" *ngIf="torrent.title.includes('WEB')">
+  <td class="col-3">
     {{ torrent.date | date:'short' }}
-  </span>
-  <span class="title">
-      {{ torrent.title }}
-  </span>
- <div class="links">
-   <span class="link">{{ formatBytes(torrent.size_bytes) }}</span>
-     <a class="link" href="{{torrent.torrent_url}}">tor</a>
-     <a class="link" [href]="sanitize(torrent.magnet_url)">mag</a>
- </div>
-</div>
+  </td>
+  <th scope="row" class="col-6">
+    {{ cleanTitle(torrent.title) }}
+  </th>
+  <td class="col-3 text-right">
+    <span class="link">{{ formatBytes(torrent.size_bytes) }}</span>
+    <a class="link" href="{{torrent.torrent_url}}">
+      <i class="fas fa-fw fa-file-download"></i>
+    </a>
+    <a class="link" [href]="sanitize(torrent.magnet_url)">
+      <i class="fas fa-fw fa-magnet"></i>
+    </a>
+  </td>
+</tr>

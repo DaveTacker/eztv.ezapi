@@ -1,3 +1,16 @@
 ul {
   list-style-type: none;
+  font-size: 12px;
+}
+
+.no-padding-left {
+  padding-left: 0;
+}
+
+.no-padding-right {
+  padding-right: 0;
+}
+
+.no-padding {
+  padding: 0;
 }

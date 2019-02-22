@@ -1,15 +1,53 @@
 <div class="container">
-
-<div class="col-8">
-
-<ul class="torrents">
-  <li *ngFor="let torrent of torrents">
-      <app-torrent [torrent]="torrent" *ngIf="torrent.title.includes('WEB')"></app-torrent>
-  </li>
-</ul>
-</div>
-<div class="col-4">
-  <input class="form-control" [(ngModel)]="addInput">
-  <ul></ul>
-</div>
+  <div class="row">
+    <div class="col-8">
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr class="row">
+            <th scope="col" class="col-3">Date</th>
+            <th scope="col" class="col-6">Title</th>
+            <th scope="col" class="col-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <app-torrent *ngFor="let torrent of torrents" [torrent]="torrent">
+          </app-torrent>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-4">
+      <form (submit)="saveShow($event)">
+        <div class="form-group">
+          <div class="row">
+            <div class="col no-padding-right">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="addInput"
+                name="addInput"
+                aria-describedby="inputHelp"
+                placeholder="IMDB Id"
+              />
+            </div>
+            <div class="col no-padding-left">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+          <small id="inputHelp" class="form-text text-muted">
+            <code>
+                https://www.imdb.com/title/tt<strong><u>######</u></strong>/
+            </code>
+          </small>
+        </div>
+      </form>
+      <ul>
+        <li *ngFor="let show of shows">
+          {{ show.title }}
+          <button type="button" class="btn btn-secondary btn-sm" (click)="deleteShow(show)">
+              <i class="fas fa-trash"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
