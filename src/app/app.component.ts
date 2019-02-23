@@ -1,5 +1,5 @@
 import { Show } from './Models/show';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Torrent } from './Models/torrent';
 
@@ -8,13 +8,18 @@ import { Torrent } from './Models/torrent';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public torrents: Array<Torrent> = [];
   public addInput = '';
   public lastTorrentParsed: Torrent;
   public shows: Array<Show> = JSON.parse(localStorage.getItem('shows')) || [];
+  public progressbar: HTMLElement;
 
   constructor(private http: Http) {
+  }
+
+  ngOnInit() {
+    this.progressbar = document.getElementById('progressbar');
     this.start();
   }
 
@@ -26,16 +31,27 @@ export class AppComponent {
       }
     };
 
+    let iterator = 0;
+
+    this.progressbar.setAttribute('aria-valuenow', '0');
+    this.progressbar.style.width = '0%';
+    this.progressbar.setAttribute('aria-valuemax', this.shows.length.toString());
+
     const start = async () => {
       await asyncForEach(this.shows, async show => {
         await waitFor(1500);
 
-        console.log(show);
-        this.grabTorrent(show.id);
+        // console.log(show);
+        console.log(iterator, this.shows.length, (iterator / this.shows.length));
+
+        this.progressbar.setAttribute('aria-valuenow', (++iterator).toString());
+        const percent = ((iterator / this.shows.length) * 100) + '%';
+        this.progressbar.style.width = percent;
+        this.grabTorrent(show.id, iterator, percent);
       });
     };
 
-    start();
+    // start();
   }
 
   getTorrentData(torrentId: string) {
@@ -64,7 +80,7 @@ export class AppComponent {
     });
   }
 
-  private grabTorrent(torrentId): Promise<any> {
+  private grabTorrent(torrentId: string, iterator?: number, percent?: string): Promise<any> {
     console.log('Fetching torrentId:', torrentId);
 
     return new Promise((resolve, reject) => {
@@ -84,6 +100,15 @@ export class AppComponent {
               return a.date > b.date ? -1 : 1;
             }
           );
+
+          console.log(iterator, percent);
+
+          this.progressbar.setAttribute('aria-valuenow', (iterator * 1000).toString());
+          this.progressbar.style.width = percent;
+
+          if (iterator === this.shows.length) {
+            document.getElementsByClassName('progress')[0].classList.add('d-none');
+          }
 
           resolve(response.torrents);
         } else {
