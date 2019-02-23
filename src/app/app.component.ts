@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.progressbar = document.getElementById('progressbar');
     this.fetchBtn = document.getElementById('fetchBtn');
-    this.start();
+    // this.start();
   }
 
   async start() {
