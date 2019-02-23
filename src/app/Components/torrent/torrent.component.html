@@ -1,9 +1,10 @@
-<tr class="row" *ngIf="torrent.title.includes('WEB')">
+<tr class="row" *ngIf="torrent.title.includes(filter)">
   <td class="col-3">
     {{ torrent.date | date:'short' }}
   </td>
   <th scope="row" class="col-6">
-    {{ cleanTitle(torrent.title) }}
+      {{ cleanTitle(torrent.title) }}
+      <!-- {{ torrent.title }} -->
   </th>
   <td class="col-3 text-right">
     <span class="link">{{ formatBytes(torrent.size_bytes) }}</span>

@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   public progressbar: HTMLElement;
   public fetchBtn: HTMLElement;
   public limit = '10';
+  public filter = '';
 
   constructor(private http: Http) {}
 
@@ -77,10 +78,12 @@ export class AppComponent implements OnInit {
         this.shows.push(show);
         localStorage.setItem('shows', JSON.stringify(this.shows));
         this.addInput = '';
+        this.fetchBtnStop();
       })
       .catch(error => {
         this.fetchBtnStop();
         console.error(error);
+        alert('An error occurred when trying to fetch the show information. Try again in a few minutes.');
       });
   }
 
@@ -95,11 +98,7 @@ export class AppComponent implements OnInit {
             this.torrents.push(torrent);
           });
 
-          this.torrents = this.torrents.sort(
-            (a: Torrent, b: Torrent): number => {
-              return a.date > b.date ? -1 : 1;
-            }
-          );
+          this.sortTorrents();
 
           this.progressbar.setAttribute('aria-valuenow', (iterator * 1000).toString());
           this.progressbar.style.width = percent;
@@ -112,6 +111,7 @@ export class AppComponent implements OnInit {
           resolve(response.torrents);
         } else {
           this.fetchBtnStop();
+          alert('No torrents for Id ' + torrentId + '!');
           reject('No torrents for Id ' + torrentId + '!');
         }
       });
@@ -138,5 +138,13 @@ export class AppComponent implements OnInit {
 
   fetchBtnStop() {
     this.fetchBtn.innerHTML = '<i class="fas fa-fw fa-sync-alt"></i> Fetch';
+  }
+
+  sortTorrents() {
+    this.torrents = this.torrents.sort(
+      (a: Torrent, b: Torrent): number => {
+        return a.date > b.date ? -1 : 1;
+      }
+    );
   }
 }
