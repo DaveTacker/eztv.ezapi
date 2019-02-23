@@ -6,7 +6,7 @@ import { Torrent } from './Models/torrent';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   public torrents: Array<Torrent> = [];
@@ -14,17 +14,19 @@ export class AppComponent implements OnInit {
   public lastTorrentParsed: Torrent;
   public shows: Array<Show> = JSON.parse(localStorage.getItem('shows')) || [];
   public progressbar: HTMLElement;
+  public fetchBtn: HTMLElement;
   public limit = '10';
 
-  constructor(private http: Http) {
-  }
+  constructor(private http: Http) {}
 
   ngOnInit() {
     this.progressbar = document.getElementById('progressbar');
+    this.fetchBtn = document.getElementById('fetchBtn');
     this.start();
   }
 
   async start() {
+    this.fetchBtnStart();
     const waitFor = ms => new Promise(r => setTimeout(r, ms));
     const asyncForEach = async (array, callback) => {
       for (let index = 0; index < array.length; index++) {
@@ -38,21 +40,18 @@ export class AppComponent implements OnInit {
     this.progressbar.style.width = '0%';
     this.progressbar.setAttribute('aria-valuemax', this.shows.length.toString());
 
-    const start = async () => {
+    const fetchAll = async () => {
       await asyncForEach(this.shows, async show => {
         await waitFor(1500);
 
-        // console.log(show);
-        console.log(iterator, this.shows.length, (iterator / this.shows.length));
-
         this.progressbar.setAttribute('aria-valuenow', (++iterator).toString());
-        const percent = ((iterator / this.shows.length) * 100) + '%';
+        const percent = (iterator / this.shows.length) * 100 + '%';
         this.progressbar.style.width = percent;
         this.grabTorrent(show.id, iterator, percent);
       });
     };
 
-    // start();
+    fetchAll();
   }
 
   getTorrentData(torrentId: string) {
@@ -60,38 +59,37 @@ export class AppComponent implements OnInit {
   }
 
   saveShow($event) {
-
+    this.fetchBtnStart();
     let showId = this.addInput;
     const input = this.addInput.split('/');
 
     input.forEach((value: string, index: number) => {
       if (value.includes('tt')) {
-        showId = value.replace( /^\D+/g, '');
+        showId = value.replace(/^\D+/g, '');
       }
     });
 
-    this.grabTorrent(showId).then((torrents: Array<Torrent>) => {
-      const torrent = torrents[0];
-      const show = new Show(torrent);
-      show.id = showId;
-      this.shows.push(show);
-      localStorage.setItem('shows', JSON.stringify(this.shows));
-      this.addInput = '';
-    }).catch(error => {
-      console.error(error);
-    });
+    this.grabTorrent(showId)
+      .then((torrents: Array<Torrent>) => {
+        const torrent = torrents[0];
+        const show = new Show(torrent);
+        show.id = showId;
+        this.shows.push(show);
+        localStorage.setItem('shows', JSON.stringify(this.shows));
+        this.addInput = '';
+      })
+      .catch(error => {
+        this.fetchBtnStop();
+        console.error(error);
+      });
   }
 
   private grabTorrent(torrentId: string, iterator?: number, percent?: string): Promise<any> {
-    console.log('Fetching torrentId:', torrentId);
-
     return new Promise((resolve, reject) => {
       this.getTorrentData(torrentId).subscribe((result: any) => {
         const response = JSON.parse(result._body);
 
         if (response.torrents && response.torrents.length) {
-          console.log(response.torrents);
-
           response.torrents.forEach((torrent: Torrent) => {
             torrent.date = new Date(torrent.date_released_unix * 1000);
             this.torrents.push(torrent);
@@ -108,10 +106,12 @@ export class AppComponent implements OnInit {
 
           if (iterator === this.shows.length) {
             document.getElementsByClassName('progress')[0].classList.add('d-none');
+            this.fetchBtnStop();
           }
 
           resolve(response.torrents);
         } else {
+          this.fetchBtnStop();
           reject('No torrents for Id ' + torrentId + '!');
         }
       });
@@ -130,5 +130,13 @@ export class AppComponent implements OnInit {
 
   saveStorage() {
     localStorage.setItem('shows', JSON.stringify(this.shows));
+  }
+
+  fetchBtnStart() {
+    this.fetchBtn.innerHTML = '<i class="fas fa-fw fa-spin fa-sync-alt"></i>';
+  }
+
+  fetchBtnStop() {
+    this.fetchBtn.innerHTML = '<i class="fas fa-fw fa-sync-alt"></i> Fetch';
   }
 }
