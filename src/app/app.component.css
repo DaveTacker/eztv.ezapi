@@ -22,17 +22,21 @@ ul {
   margin-bottom: 1rem;
 }
 
-.save-btn {
-  padding: 9px 10px;
-}
-
 li.saved-shows {
   position: relative;
-  padding: 5px 0;
+  padding: 3px 0;
 }
 
 .saved-shows > .btn {
-  padding: 5px 7px;
   position: absolute;
   right: 0;
+  top: 6px;
+}
+
+.input-group > .input-group-prepend > .input-group-text {
+  min-width: 70px;
+}
+
+.stealthy-input {
+  border: none;
 }

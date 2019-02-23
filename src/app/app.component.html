@@ -41,6 +41,14 @@
       </table>
     </div>
     <div class="col-4">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Limit</span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="limit" name="limit" />
+          </div>
+
       <form (submit)="saveShow($event)" class="form-inline">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -54,7 +62,7 @@
       </form>
       <ul>
         <li class="saved-shows" *ngFor="let show of shows">
-          {{ show.title }}
+          <input type="text" class="form-control stealthy-input" [(ngModel)]="show.title" name="addInput" (change)="saveStorage()" />
           <button type="button" class="btn btn-secondary btn-sm" (click)="deleteShow(show)">
             <i class="fas fa-trash"></i>
           </button>

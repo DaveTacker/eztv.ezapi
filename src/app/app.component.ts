@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   public lastTorrentParsed: Torrent;
   public shows: Array<Show> = JSON.parse(localStorage.getItem('shows')) || [];
   public progressbar: HTMLElement;
+  public limit = '10';
 
   constructor(private http: Http) {
   }
@@ -55,7 +56,7 @@ export class AppComponent implements OnInit {
   }
 
   getTorrentData(torrentId: string) {
-    return this.http.get(`https://eztv.io/api/get-torrents?imdb_id=${torrentId}`);
+    return this.http.get(`https://eztv.io/api/get-torrents?imdb_id=${torrentId}&limit=${this.limit}`);
   }
 
   saveShow($event) {
@@ -75,6 +76,7 @@ export class AppComponent implements OnInit {
       show.id = showId;
       this.shows.push(show);
       localStorage.setItem('shows', JSON.stringify(this.shows));
+      this.addInput = '';
     }).catch(error => {
       console.error(error);
     });
@@ -101,8 +103,6 @@ export class AppComponent implements OnInit {
             }
           );
 
-          console.log(iterator, percent);
-
           this.progressbar.setAttribute('aria-valuenow', (iterator * 1000).toString());
           this.progressbar.style.width = percent;
 
@@ -125,6 +125,10 @@ export class AppComponent implements OnInit {
       }
     });
 
+    localStorage.setItem('shows', JSON.stringify(this.shows));
+  }
+
+  saveStorage() {
     localStorage.setItem('shows', JSON.stringify(this.shows));
   }
 }
