@@ -14,4 +14,16 @@ export class Show {
     const match = myRegexp.exec(title);
     return match[0].toString().substr(0, match[0].length - 2);
   }
+
+  public toObject(): object {
+    const retval = {};
+
+    Object.keys(this).forEach((key: any) => {
+      if (this[key] !== undefined) {
+        retval[key] = this[key];
+      }
+    });
+
+    return retval;
+  }
 }

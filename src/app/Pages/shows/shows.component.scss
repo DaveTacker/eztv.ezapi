@@ -1,0 +1,56 @@
+ul {
+  list-style-type: none;
+  font-size: 12px;
+}
+
+.no-padding-left {
+  padding-left: 0;
+}
+
+.no-padding-right {
+  padding-right: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.progress-container {
+  width: 100%;
+  height: 1rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+li.saved-shows {
+  position: relative;
+  padding: 3px 0;
+}
+
+.saved-shows > .btn {
+  position: absolute;
+  right: 0;
+  top: 6px;
+}
+
+.input-group > .input-group-prepend > .input-group-text {
+  min-width: 70px;
+}
+
+.stealthy-input {
+  border: none;
+}
+
+.bottom-space-25 {
+  margin-bottom: 25px;
+}
+
+hr {
+  margin-bottom: 25px;
+}
+
+#pageUrl {
+  border: none;
+  background-color: transparent;
+  height: 28px;
+}

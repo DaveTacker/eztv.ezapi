@@ -1,8 +1,12 @@
+import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ShowsComponent } from './Pages/shows/shows.component';
 
 const routes: Routes = [
-  { path: ':id', loadChildren: './app.module#AppModule' },
+  { path: '', redirectTo: '/shows', pathMatch: 'full' },
+  { path: 'shows', component: ShowsComponent },
+  { path: 'shows/:id', component: ShowsComponent },
 ];
 
 @NgModule({
