@@ -1,15 +1,14 @@
 <div class="container">
   <h1>
-    ez.tv ez-api
+    EZTV's easy API
   </h1>
   <p>
-    This service should allow anyone to easily monitor TV Show torrent availability via the
-    <a href="https://eztv.io/api/">eztv.it API</a>.
-  </p>
-  <p class="well well-sm">
-    To add a show copy and paste either the URL from IMDB's
-    <a href="https://www.imdb.com/title/tt0944947/?ref_=nv_sr_1">show page</a> or enter the IMDB show Id number. Once added
-    the show title and Id will be saved to your browser's LocalStorage.
+    <small>
+      <i>
+          This service should allow anyone to easily monitor TV Show torrent availability via the
+          <a href="https://eztv.io/api/">eztv.it API</a>. Neither this site or it's author is associated with EZTV in anyway, whatsoever.
+      </i>
+    </small>
   </p>
   <hr />
   <div class="row">
@@ -28,6 +27,12 @@
         </div>
       </div>
       <table class="table table-striped table-sm">
+        <colgroup>
+          <col class="col-3">
+          <col class="col-6">
+          <col class="col-3">
+        </colgroup>
+
         <thead>
           <tr class="row">
             <th scope="col" class="col-3">Date</th>
@@ -35,8 +40,9 @@
             <th scope="col" class="col-3"></th>
           </tr>
         </thead>
+
         <tbody>
-          <app-torrent *ngFor="let torrent of torrents" [torrent]="torrent"> </app-torrent>
+          <app-torrent *ngFor="let torrent of torrents" [torrent]="torrent" [filter]="filter"> </app-torrent>
         </tbody>
       </table>
     </div>
@@ -46,6 +52,17 @@
         Fetch
       </button>
       <hr class="bottom-space-25" />
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Filter</span>
+            </div>
+            <input type="text" placeholder="ex: 'x264'" class="form-control" [(ngModel)]="filter" name="filter" (change)="sortTorrents()" />
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col">
           <div class="input-group mb-3">
@@ -62,7 +79,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Id</span>
           </div>
-          <input type="text" class="form-control" [(ngModel)]="addInput" name="addInput" />
+          <input placeholder="IMDB link or show id" type="text" class="form-control" [(ngModel)]="addInput" name="addInput" />
           <div class="input-group-append">
             <button type="submit" class="btn btn-outline-primary save-btn">Save</button>
           </div>
@@ -84,4 +101,7 @@
       </ul>
     </div>
   </div>
+
+  <h2>Disclaimer, or, Use at your own risk</h2>
+  <p>none of the authors, contributors, administrators, vandals, or anyone else connected with this site, in any way whatsoever, can be responsible for your use of the information contained in or linked from this site.</p>
 </div>

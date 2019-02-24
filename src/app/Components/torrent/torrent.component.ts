@@ -10,6 +10,7 @@ import * as moment from 'moment';
 })
 export class TorrentComponent implements OnInit {
   @Input() torrent: Torrent = new Torrent();
+  @Input() filter = '';
 
   constructor(public sanitizer: DomSanitizer) {}
 
