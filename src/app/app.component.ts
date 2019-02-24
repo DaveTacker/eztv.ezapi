@@ -1,28 +1,39 @@
+import { ShowsService } from './Services/shows.service';
 import { Show } from './Models/show';
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Torrent } from './Models/torrent';
+import { Route } from '@angular/compiler/src/core';
+import { ActivatedRoute } from '@angular/router';
+
+export interface Shows {
+  shows: Array<Show>;
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
   public torrents: Array<Torrent> = [];
   public addInput = '';
   public lastTorrentParsed: Torrent;
-  public shows: Array<Show> = JSON.parse(localStorage.getItem('shows')) || [];
+  // public shows: Array<Show> = JSON.parse(localStorage.getItem('shows')) || [];
+  public shows: Array<Show> = [];
   public progressbar: HTMLElement;
   public fetchBtn: HTMLElement;
   public limit = '10';
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, public db: ShowsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.progressbar = document.getElementById('progressbar');
     this.fetchBtn = document.getElementById('fetchBtn');
-    this.start();
+    this.subscribe();
+
+    // this.start();
   }
 
   async start() {
@@ -54,11 +65,27 @@ export class AppComponent implements OnInit {
     fetchAll();
   }
 
+  subscribe(): void {
+    if (this.db.docId) {
+      this.db.get().subscribe((shows: any) => {
+        this.shows = shows;
+      });
+    }
+  }
+
   getTorrentData(torrentId: string) {
     return this.http.get(`https://eztv.io/api/get-torrents?imdb_id=${torrentId}&limit=${this.limit}`);
   }
 
-  saveShow($event) {
+  /**
+   * 1) Get the show Id
+   * 2) fetch the show information from EZTV
+   * 3) parse the show name
+   * 4) Save the show to Firestore
+   *
+   * @memberof AppComponent
+   */
+  saveShow() {
     this.fetchBtnStart();
     let showId = this.addInput;
     const input = this.addInput.split('/');
@@ -71,12 +98,17 @@ export class AppComponent implements OnInit {
 
     this.grabTorrent(showId)
       .then((torrents: Array<Torrent>) => {
+        this.addInput = '';
         const torrent = torrents[0];
         const show = new Show(torrent);
         show.id = showId;
-        this.shows.push(show);
-        localStorage.setItem('shows', JSON.stringify(this.shows));
-        this.addInput = '';
+
+        if (!this.shows.length) {
+          return this.db.set(this.shows);
+        }
+
+        this.db.update(this.shows);
+        // localStorage.setItem('shows', JSON.stringify(this.shows));
       })
       .catch(error => {
         this.fetchBtnStop();

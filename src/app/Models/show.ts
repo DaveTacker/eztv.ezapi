@@ -3,6 +3,7 @@ import { Torrent } from './torrent';
 export class Show {
   id = '';
   title = '';
+  added = new Date();
 
   constructor(data: Torrent) {
     this.title = this.cleanTitle(data.title);
