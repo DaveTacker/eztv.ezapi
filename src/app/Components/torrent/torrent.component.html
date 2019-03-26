@@ -1,9 +1,12 @@
-<tr class="row" *ngIf="torrent.title.includes(filter)">
+<tr class="row">
+<!-- <tr class="row" *ngIf="torrent.title.includes(filter)"> -->
   <td class="col-3">
     {{ torrent.date | date:'short' }}
   </td>
   <th scope="row" class="col-6">
+    <a href="{{torrent.episode_url}}" target="_blank">
       {{ cleanTitle(torrent.title) }}
+    </a>
       <!-- {{ torrent.title }} -->
   </th>
   <td class="col-3 text-right">

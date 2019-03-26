@@ -1,17 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>EZ-API</title>
-  <base href="/">
+  <head>
+    <meta charset="utf-8" />
+    <title>EZ-API</title>
+    <base href="/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-  <base href="/">
-  <link type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+    <base href="/" />
+    <link type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135067254-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135067254-1');
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

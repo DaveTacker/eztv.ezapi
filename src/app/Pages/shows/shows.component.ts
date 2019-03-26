@@ -1,3 +1,4 @@
+import { TorrentService } from './../../Services/torrent.service';
 import { Http } from '@angular/http';
 import { Show } from './../../Models/show';
 import { Torrent } from './../../Models/torrent';
@@ -23,7 +24,7 @@ export class ShowsComponent implements OnInit {
   public filter = '';
   public year = new Date().getFullYear();
 
-  constructor(private http: Http, public db: ShowsService) { }
+  constructor(private http: Http, public db: ShowsService, private torrentService: TorrentService) { }
 
   ngOnInit() {
     this.progressbar = document.getElementById('progressbar');
@@ -31,8 +32,13 @@ export class ShowsComponent implements OnInit {
     this.fetchBtn = document.getElementById('fetchBtn');
     this.subscribe();
 
-
+    // Hide the progress bar
     this.progressParent.style.display = 'none';
+
+    // Fetch all of the stored torrent data
+    this.torrents = this.torrentService.torrents;
+    console.log('this.torrents', this.torrents);
+
     // this.start();
   }
 
@@ -57,7 +63,7 @@ export class ShowsComponent implements OnInit {
 
     const fetchAll = async () => {
       await asyncForEach(this.shows, async show => {
-        await waitFor(1500);
+        await waitFor(500);
 
         this.updateVisibleProgress(++iterator);
         this.grabTorrent(show.id, iterator);
@@ -154,6 +160,7 @@ export class ShowsComponent implements OnInit {
         response.torrents.forEach((torrent: Torrent) => {
           torrent.date = new Date(torrent.date_released_unix * 1000);
           this.torrents.push(torrent);
+          this.torrentService.addTorrent(torrent);
         });
 
         this.sortTorrents();

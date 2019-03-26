@@ -71,7 +71,7 @@
         </thead>
 
         <tbody>
-          <app-torrent *ngFor="let torrent of torrents" [torrent]="torrent" [filter]="filter"> </app-torrent>
+          <app-torrent *ngFor="let torrent of torrents | myfilter:filter" [torrent]="torrent"> </app-torrent>
         </tbody>
       </table>
     </div>

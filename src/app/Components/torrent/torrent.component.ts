@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Torrent } from 'src/app/Models/torrent';
+import { Torrent } from '../../Models/torrent';
 import * as moment from 'moment';
 
 @Component({
@@ -10,7 +10,6 @@ import * as moment from 'moment';
 })
 export class TorrentComponent implements OnInit {
   @Input() torrent: Torrent = new Torrent();
-  @Input() filter = '';
 
   constructor(public sanitizer: DomSanitizer) {}
 
