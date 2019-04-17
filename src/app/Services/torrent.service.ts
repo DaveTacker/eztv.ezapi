@@ -28,4 +28,8 @@ export class TorrentService {
   private set() {
     localStorage.setItem('torrents', JSON.stringify(this.torrentsArr));
   }
+
+  public clear() {
+    localStorage.removeItem('torrents');
+  }
 }
