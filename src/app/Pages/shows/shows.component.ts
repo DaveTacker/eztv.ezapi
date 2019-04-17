@@ -37,9 +37,7 @@ export class ShowsComponent implements OnInit {
 
     // Fetch all of the stored torrent data
     this.torrents = this.torrentService.torrents;
-    console.log('this.torrents', this.torrents);
-
-    // this.start();
+    this.sortTorrents();
   }
 
   /**
@@ -49,7 +47,13 @@ export class ShowsComponent implements OnInit {
    */
   async start() {
     this.fetchBtnStart();
+
+    // Clear old torrents
+    this.torrents = [];
+    this.torrentService.clear();
+
     const waitFor = ms => new Promise(r => setTimeout(r, ms));
+
     const asyncForEach = async (array, callback) => {
       for (let index = 0; index < array.length; index++) {
         await callback(array[index], index, array);
